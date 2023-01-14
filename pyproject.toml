@@ -24,3 +24,6 @@ build = "^0.10.0"
 [build-system]
 build-backend = "setuptools.build_meta"
 requires = ["setuptools", "wheel"]
+
+[tool.poetry.scripts]
+dstack-cli = "dstack_test_task.main:cli"
