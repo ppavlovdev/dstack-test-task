@@ -34,8 +34,8 @@ class CloudWatchProvider(ILogProvider):
 
     def _create_log_stream(self) -> None:
         try:
-            click.echo(f'Creating log stream: "{self.group_name}"\n')
-            self._client.create_log_group(logGroupName=self.group_name)
+            click.echo(f'Creating log stream: "{self.stream_name}"')
+            self._client.create_log_stream(logGroupName=self.group_name, logStreamName=self.stream_name)
         except self._client.exceptions.ResourceAlreadyExistsException as err:
             click.echo(f'Log stream already exists. Re-using\n')
 
@@ -44,7 +44,7 @@ class CloudWatchProvider(ILogProvider):
         self._create_log_stream()
 
     def write(self, msg: str) -> None:
-        log: InputLogEventTypeDef = {"timestamp": int(datetime.datetime.utcnow().timestamp()), "message": msg}
+        log: InputLogEventTypeDef = {"timestamp": int(datetime.datetime.utcnow().timestamp() * 1000), "message": msg}
         click.echo(log)
         self._client.put_log_events(
             logGroupName=self.group_name,
@@ -124,7 +124,7 @@ def cli(
         cwp = CloudWatchProvider(logs_client, aws_cloudwatch_group, aws_cloudwatch_stream)
         cwp.init()
         for log_line in container.logs(stream=True, follow=True):
-            cwp.write(log_line.decode('utf-8'))
+            cwp.write(log_line.decode('utf-8').strip())
 
 
 if __name__ == "__main__":
