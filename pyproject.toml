@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "dstack-test-task"
+version = "0.0.1"
+description = "Test task for dstack.ai vacancy"
+authors = ["Paul Pavlov <dev.captainmurphy@gmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
